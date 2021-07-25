@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset=utf-8>
+    <title>Beadando</title>
+    <style>
+        body { margin: 0; overflow: hidden }
+        canvas { width: 100%; height: 100% }
+    </style>
+</head>
+<body onload = "init()" >
+<script src ="ThreeJsPeldatar/js-r87/three.js" > </script>
+<script src ="ThreeJsPeldatar/js-r87/TrackballControls.js" > </script>
+
+<script>
+
+    var WIDTH, HEIGHT, aspectratio;
+    var renderer, kamera, scene, controls;
+    var ut1,ut2,ut3,ut1ma,ut2ma,ut3ma,ut1me,ut2me,ut3me;
+    var fu4,fu5,fu6,fu4ma,fu5ma,fu6ma,fu4me,fu5me,fu6me;
+    var heli1me, heli2me, heli3me,torony;
+    var hangarme,hangar2me;
+
+    function init() {
+
+        WIDTH = window.innerWidth;
+        HEIGHT = window.innerHeight;
+        aspectratio = WIDTH/HEIGHT;
+
+        renderer = new THREE.WebGLRenderer( { antialias : true });
+        renderer.setSize(WIDTH,HEIGHT);
+        renderer.setClearColor(0xffffff);
+        document.body.appendChild( renderer.domElement );
+
+        renderer.shadowMap.enabled = true;
+
+        scene = new THREE.Scene();
+
+        kamera = new THREE.PerspectiveCamera( 75, aspectratio, 0.1, 1000);
+        kamera.position.z = 30;
+        kamera.position.y = 25;
+        kamera.position.x = -25;
+
+        controls = new THREE.TrackballControls(kamera, renderer.domElement);
+        controls.panSpeed= 1.0;
+        controls.rotateSpeed = 5.0;
+
+        var manager = new THREE.LoadingManager();
+
+        var jsonLoader = new THREE.JSONLoader( manager );
+        jsonLoader.load( 'torony.json', function ( geom ) {
+            var toronyma = new THREE.MeshPhongMaterial({color: 0xaa0000, wireframe: false, side: THREE.DoubleSide});
+            torony = new THREE.Mesh(geom, toronyma);
+            torony.rotation.y = -1*THREE.Math.degToRad(90);
+            torony.scale.set(7,7,7);
+            torony.position.set(-70,0,-70);
+            torony.receiveShadow=true;
+            torony.castShadow=true;
+
+            scene.add(torony);
+        });
+
+        jsonLoader.load( 'helikopter2.json', function ( geom ) {
+            var heli1ma = new THREE.MeshPhongMaterial({color: 0xff0000, wireframe: false, side: THREE.DoubleSide});
+            heli1me = new THREE.Mesh(geom, heli1ma);
+            heli1me.rotation.y = -1*THREE.Math.degToRad(90);
+            heli1me.scale.set(2.5,2.5,2.5);
+            heli1me.position.set(425,0,-18.5);
+            heli1me.receiveShadow=true;
+            heli1me.castShadow=true;
+
+            scene.add(heli1me);
+        });
+
+        jsonLoader.load( 'helikopter2.json', function ( geom ) {
+            var heli3ma = new THREE.MeshPhongMaterial({color: 0xff0000, wireframe: false, side: THREE.DoubleSide});
+            heli3me = new THREE.Mesh(geom, heli3ma);
+            //heli3me.rotation.y = -1*THREE.Math.degToRad(180);
+            heli3me.scale.set(2.5,2.5,2.5);
+            heli3me.position.set(187.5,0,-95);
+            heli3me.receiveShadow=true;
+            heli3me.castShadow=true;
+
+            scene.add(heli3me);
+        });
+
+        jsonLoader.load( 'helikopter2.json', function ( geom ) {
+            var heli2ma = new THREE.MeshPhongMaterial({color: 0x0000ff, wireframe: false, side: THREE.DoubleSide});
+            heli2me = new THREE.Mesh(geom, heli2ma);
+            heli2me.rotation.y = -1*THREE.Math.degToRad(90);
+            heli2me.scale.set(2.5,2.5,2.5);
+            heli2me.position.set(425,0,18.5);
+            heli2me.receiveShadow=true;
+            heli2me.castShadow=true;
+
+            scene.add(heli2me);
+        });
+
+        jsonLoader.load( 'hangar.json', function ( geom ) {
+            var hangarma = new THREE.MeshPhongMaterial({color: 0xf0f0f0, wireframe: false, side: THREE.DoubleSide});
+            hangarme = new THREE.Mesh(geom, hangarma);
+            hangarme.rotation.y = -1*THREE.Math.degToRad(270);
+            hangarme.scale.set(25,25,25);
+            hangarme.position.set(187.5,-8.5,-95);
+            hangarme.receiveShadow=true;
+            hangarme.castShadow=true;
+
+            scene.add(hangarme);
+        });
+
+        jsonLoader.load( 'hangar.json', function ( geom1 ) {
+            var hangar2ma = new THREE.MeshPhongMaterial({color: 0xf0f0f0, wireframe: false, side: THREE.DoubleSide});
+            hangar2me = new THREE.Mesh(geom1, hangar2ma);
+            hangar2me.rotation.y = -1*THREE.Math.degToRad(270);
+            hangar2me.scale.set(25,25,25);
+            hangar2me.position.set(287.5,-8.5,-95);
+            hangar2me.receiveShadow=true;
+            hangar2me.castShadow=true;
+
+            scene.add(hangar2me);
+        });
+
+
+        ut1 = new THREE.PlaneGeometry(250,75);
+        ut1ma = new THREE.MeshPhongMaterial({color : 0x808080, wireframe : false, side: THREE.DoubleSide});
+        ut1me = new THREE.Mesh(ut1,ut1ma);
+        ut1me.rotation.x = -1*THREE.Math.degToRad(90);
+        ut1me.receiveShadow=true;
+
+        scene.add(ut1me);
+
+        ut2 = new THREE.PlaneGeometry(250,200);
+        ut2ma = new THREE.MeshPhongMaterial({color : 0x808080, wireframe : false, side: THREE.DoubleSide});
+        ut2me = new THREE.Mesh(ut2,ut2ma);
+        ut2me.rotation.x = -1*THREE.Math.degToRad(90);
+        ut2me.position.set(250,0,-62.5);
+        ut2me.receiveShadow=true;
+        scene.add(ut2me);
+
+        ut3 = new THREE.PlaneGeometry(100,75);
+        ut3ma = new THREE.MeshPhongMaterial({color : 0x808080, wireframe : false, side: THREE.DoubleSide});
+        ut3me = new THREE.Mesh(ut3,ut3ma);
+        ut3me.rotation.x = -1*THREE.Math.degToRad(90);
+        ut3me.position.set(425,0,0);
+        ut3me.receiveShadow=true;
+        scene.add(ut3me);
+
+        fu1 = new THREE.PlaneGeometry(700,74);
+        fu1ma = new THREE.MeshPhongMaterial({color : 0x00aa00, wireframe : false, side: THREE.DoubleSide});
+        fu1me = new THREE.Mesh(fu1,fu1ma);
+        fu1me.rotation.x = -1*THREE.Math.degToRad(90);
+        fu1me.position.set(175,0,74.5);
+        fu1me.receiveShadow=true;
+        scene.add(fu1me);
+
+        fu2 = new THREE.PlaneGeometry(50,75);
+        fu2ma = new THREE.MeshPhongMaterial({color : 0x00aa00, wireframe : false, side: THREE.DoubleSide});
+        fu2me = new THREE.Mesh(fu2,fu2ma);
+        fu2me.rotation.x = -1*THREE.Math.degToRad(90);
+        fu2me.position.set(-150,0,0);
+        fu2me.receiveShadow=true;
+        scene.add(fu2me);
+
+        fu3 = new THREE.PlaneGeometry(300,250);
+        fu3ma = new THREE.MeshPhongMaterial({color : 0x00aa00, wireframe : false, side: THREE.DoubleSide});
+        fu3me = new THREE.Mesh(fu3,fu3ma);
+        fu3me.rotation.x = -1*THREE.Math.degToRad(90);
+        fu3me.position.set(-25,0,-162.5);
+        fu3me.receiveShadow=true;
+        scene.add(fu3me);
+
+        fu4 = new THREE.PlaneGeometry(400,125);
+        fu4ma = new THREE.MeshPhongMaterial({color : 0x00aa00, wireframe : false, side: THREE.DoubleSide});
+        fu4me = new THREE.Mesh(fu4,fu4ma);
+        fu4me.rotation.x = -1*THREE.Math.degToRad(90);
+        fu4me.position.set(325,0,-225);
+        fu4me.receiveShadow=true;
+        scene.add(fu4me);
+
+        fu5 = new THREE.PlaneGeometry(100,175);
+        fu5ma = new THREE.MeshPhongMaterial({color : 0x00aa00, wireframe : false, side: THREE.DoubleSide});
+        fu5me = new THREE.Mesh(fu5,fu5ma);
+        fu5me.rotation.x = -1*THREE.Math.degToRad(90);
+        fu5me.position.set(425,0,-125);
+        fu5me.receiveShadow=true;
+        scene.add(fu5me);
+
+        fu6 = new THREE.PlaneGeometry(50,250);
+        fu6ma = new THREE.MeshPhongMaterial({color : 0x00aa00, wireframe : false, side: THREE.DoubleSide});
+        fu6me = new THREE.Mesh(fu6,fu6ma);
+        fu6me.rotation.x = -1*THREE.Math.degToRad(90);
+        fu6me.position.set(500,0,-87.5);
+        fu6me.receiveShadow=true;
+        scene.add(fu6me);
+
+        var pLight = new THREE.PointLight( 0xffffff, 1 );
+        pLight.position.set( 425, 100, -100 );
+        pLight.distance=500;
+        pLight.castShadow=true;
+        scene.add( pLight );
+
+        var p1Light = new THREE.PointLight( 0xffffff, 1 );
+        p1Light.position.set( 250, 50, 100 );
+        p1Light.distance=500;
+        p1Light.castShadow=true;
+        scene.add( p1Light );
+
+        var p1Light = new THREE.PointLight( 0xffffff, 0.5 );
+        p1Light.position.set( 0, 50, 100 );
+        p1Light.distance=250;
+        p1Light.castShadow=true;
+        scene.add( p1Light );
+
+        var ambientLight = new THREE.AmbientLight( 0xffffff, 0.2 );
+        scene.add( ambientLight );
+
+        lgeo = new THREE.BoxGeometry(0.75,0.75,0.75);
+        lmaterial = new THREE.MeshPhongMaterial( {color : 0xff0000, wireframe: false });
+        lmesh = new THREE.Mesh(lgeo,lmaterial);
+        lmesh.position.set(375,0,36.5);
+        scene.add(lmesh);
+
+        l1geo = new THREE.BoxGeometry(0.75,0.75,0.75);
+        l1material = new THREE.MeshBasicMaterial( {color : 0xff0000, wireframe: false });
+        l1mesh = new THREE.Mesh(l1geo,l1material);
+        l1mesh.position.set(200,0,36.5);
+        scene.add(l1mesh);
+
+        l2geo = new THREE.BoxGeometry(0.75,0.75,0.75);
+        l2material = new THREE.MeshBasicMaterial( {color : 0xff0000, wireframe: false });
+        l2mesh = new THREE.Mesh(l2geo,l2material);
+        l2mesh.position.set(120,0,36.5);
+        scene.add(l2mesh);
+
+        l3geo = new THREE.BoxGeometry(0.75,0.75,0.75);
+        l3material = new THREE.MeshBasicMaterial( {color : 0xff0000, wireframe: false });
+        l3mesh = new THREE.Mesh(l3geo,l3material);
+        l3mesh.position.set(-40,0,36.5);
+        scene.add(l3mesh);
+
+        l4geo = new THREE.BoxGeometry(0.75,0.75,0.75);
+        l4material = new THREE.MeshBasicMaterial( {color : 0xff0000, wireframe: false });
+        l4mesh = new THREE.Mesh(l4geo,l4material);
+        l4mesh.position.set(-120,0,36.5);
+        scene.add(l4mesh);
+
+        l5geo = new THREE.BoxGeometry(0.75,0.75,0.75);
+        l5material = new THREE.MeshBasicMaterial( {color : 0xff0000, wireframe: false });
+        l5mesh = new THREE.Mesh(l5geo,l5material);
+        l5mesh.position.set(40,0,36.5);
+        scene.add(l5mesh);
+
+        l6geo = new THREE.BoxGeometry(0.75,0.75,0.75);
+        l6material = new THREE.MeshBasicMaterial( {color : 0xff0000, wireframe: false });
+        l6mesh = new THREE.Mesh(l6geo,l6material);
+        l6mesh.position.set(120,0,-36.5);
+        scene.add(l6mesh);
+
+        l7geo = new THREE.BoxGeometry(0.75,0.75,0.75);
+        l7material = new THREE.MeshBasicMaterial( {color : 0xff0000, wireframe: false });
+        l7mesh = new THREE.Mesh(l7geo,l7material);
+        l7mesh.position.set(-40,0,-36.5);
+        scene.add(l7mesh);
+
+        l8geo = new THREE.BoxGeometry(0.75,0.75,0.75);
+        l8material = new THREE.MeshBasicMaterial( {color : 0xff0000, wireframe: false });
+        l8mesh = new THREE.Mesh(l8geo,l8material);
+        l8mesh.position.set(-120,0,-36.5);
+        scene.add(l8mesh);
+
+        l9geo = new THREE.BoxGeometry(0.75,0.75,0.75);
+        l9material = new THREE.MeshBasicMaterial( {color : 0xff0000, wireframe: false });
+        l9mesh = new THREE.Mesh(l9geo,l9material);
+        l9mesh.position.set(375,0,-36.5);
+        scene.add(l9mesh);
+
+        l10geo = new THREE.BoxGeometry(0.75,0.75,0.75);
+        l10material = new THREE.MeshBasicMaterial( {color : 0xff0000, wireframe: false });
+        l10mesh = new THREE.Mesh(l10geo,l10material);
+        l10mesh.position.set(40,0,-36.5);
+        scene.add(l10mesh);
+
+        l11geo = new THREE.BoxGeometry(0.75,0.75,0.75);
+        l11material = new THREE.MeshBasicMaterial( {color : 0xff0000, wireframe: false });
+        l11mesh = new THREE.Mesh(l11geo,l11material);
+        l11mesh.position.set(-80,0,36.5);
+        scene.add(l11mesh);
+
+        l12geo = new THREE.BoxGeometry(0.75,0.75,0.75);
+        l12material = new THREE.MeshBasicMaterial( {color : 0xff0000, wireframe: false });
+        l12mesh = new THREE.Mesh(l12geo,l12material);
+        l12mesh.position.set(-0,0,36.5);
+        scene.add(l12mesh);
+
+        l13geo = new THREE.BoxGeometry(0.75,0.75,0.75);
+        l13material = new THREE.MeshBasicMaterial( {color : 0xff0000, wireframe: false });
+        l13mesh = new THREE.Mesh(l13geo,l13material);
+        l13mesh.position.set(-80,0,36.5);
+        scene.add(l13mesh);
+
+        l14geo = new THREE.BoxGeometry(0.75,0.75,0.75);
+        l14material = new THREE.MeshBasicMaterial( {color : 0xff0000, wireframe: false });
+        l14mesh = new THREE.Mesh(l14geo,l14material);
+        l14mesh.position.set(-80,0,-36.5);
+        scene.add(l14mesh);
+
+        l15geo = new THREE.BoxGeometry(0.75,0.75,0.75);
+        l15material = new THREE.MeshBasicMaterial( {color : 0xff0000, wireframe: false });
+        l15mesh = new THREE.Mesh(l15geo,l15material);
+        l15mesh.position.set(-0,0,-36.5);
+        scene.add(l15mesh);
+
+        l16geo = new THREE.BoxGeometry(0.75,0.75,0.75);
+        l16material = new THREE.MeshBasicMaterial( {color : 0xff0000, wireframe: false });
+        l16mesh = new THREE.Mesh(l16geo,l16material);
+        l16mesh.position.set(-80,0,-36.5);
+        scene.add(l16mesh);
+
+        feher = new THREE.BoxGeometry(275,0.5,0);
+        fehermaterial = new THREE.MeshBasicMaterial( {color : 0xffffff, wireframe: false });
+        fehermesh = new THREE.Mesh(feher,fehermaterial);
+        fehermesh.position.set(25,0,0);
+        scene.add(fehermesh);
+
+
+
+        window.addEventListener('resize', handleResize(), true);
+
+        render();
+    }
+
+    function handleResize() {
+        WIDTH = window.innerWidth;
+        HEIGHT = window.innerHeight;
+        renderer.setSize(WIDTH,HEIGHT);
+        aspectratio = WIDTH /HEIGHT;
+        kamera.aspect=aspectratio;
+        kamera.updateProjectionMatrix();
+    }
+
+    var render = function() {
+        requestAnimationFrame(render);
+        controls.update();
+        renderer.render(scene,kamera);
+
+    };
+
+
+</script>
+</body>
+</html>
